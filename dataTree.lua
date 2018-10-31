@@ -1,3 +1,5 @@
+local write = io.write
+
 local DataTree = {}
 
 DataTree = function()
@@ -11,6 +13,9 @@ DataTree = function()
     table.last[n] = 0
     if fields then
       for k,v in pairs(fields) do
+        if table[k] == nil then
+          table[k] = {}
+        end
         table[k][n]=v
       end
     end
@@ -32,16 +37,24 @@ end
 
 local tree = DataTree()
 
-function addChild(ndx,label)
-  return tree.addChild(ndx,label)
+function addChild(ndx,label,fields)
+  return tree.addChild(ndx,label,fields)
 end
 
-function nodeNew(label)
-  return tree.nodeNew(label)
+function nodeNew(label,fields)
+  return tree.nodeNew(label,fields)
 end
 
 function printNode(node,fields)
-  print(tree.name[node])
+  write(tree.name[node]..' ')
+  if fields then
+    for i=1,#fields do
+      if tree[fields[i]][node] then
+        write(tree[fields[i]][node]..' ')
+      end
+    end
+  end
+  write('\n')
   local child = tree.first[node]
   while child ~= 0 do
     printNode(child,fields)

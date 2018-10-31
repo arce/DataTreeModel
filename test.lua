@@ -22,4 +22,4 @@ birds = nodeNew("Aves", {vulgo = "Bird"})
 addChild(birds,"Neognathae", {vulgo = "New Jaws", species = 10000})
 addChild(birds,"Palaeognathae", {vulgo = "Old Jaws", species = 60})
 
-printNode(birds, {"vulgo", "species"})
+printNode(birds, {'vulgo', 'species'})
