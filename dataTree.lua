@@ -2,10 +2,11 @@ local write = io.write
 require "dataVector"
 require "CSV"
 
-function dataTree()
-  local table = {name=vector(),parent=vector(),
-    first=vector(),next=vector(),last=vector(),
-    size=vector(),height=vector()}
+function dataTree(id)
+  local oid = id or ""
+  local table = {name=vector('nm'..oid),parent=vector('prn'..oid),
+    first=vector('frs'..oid),next=vector('nxt'..oid),last=vector('lst'..oid),
+    size=vector('sz'..oid),height=vector('hgh'..oid),oid=oid}
   table.nodeNew = function(label,fields)
     local n = table.name.size() + 1
     table.name[n] = label
@@ -68,5 +69,6 @@ function printDataNode(tree,node,fields)
 end
 
 function printDataTree(tree,fields)
+  print("oid:",tree.oid)
   printDataNode(tree,1,fields)
 end

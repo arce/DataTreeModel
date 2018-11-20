@@ -2,7 +2,7 @@ require "dataTree"
 
 -- Create a tree programmatically
 
-local tree1 = dataTree()
+local tree1 = dataTree("Test1")
 acme = tree1.nodeNew("Acme Inc.")
   accounting = tree1.addChild(acme,"Accounting")
     software = tree1.addChild(accounting,"New Software")
@@ -21,7 +21,7 @@ print()
 
 -- Custom fields in constructor
 
-local tree2 = dataTree()
+local tree2 = dataTree("Test2")
 birds = tree2.nodeNew("Aves", {vulgo = "Bird"})
 tree2.addChild(birds,"Neognathae", {vulgo = "New Jaws", species = 10000})
 tree2.addChild(birds,"Palaeognathae", {vulgo = "Old Jaws", species = 60})
