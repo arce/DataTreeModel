@@ -4,9 +4,24 @@ require "CSV"
 
 function dataTree(id)
   local oid = id or ""
-  local table = {name=vector('nm'..oid),parent=vector('prn'..oid),
-    first=vector('frs'..oid),next=vector('nxt'..oid),last=vector('lst'..oid),
-    size=vector('sz'..oid),height=vector('hgh'..oid),oid=oid}
+  local table = {name=vector(),parent=vector(),first=vector(),
+    next=vector(),last=vector(),size=vector(),height=vector()}
+  local _table = table
+  table = {oid=id}
+  for k,_ in pairs(_table) do
+    _table[k].oid = table.oid..tostring(k)
+  end
+  local metatable = {
+    __newindex = function(table,k,v)
+      _table[k] = v
+      if table.oid then
+        _table[k].oid = table.oid..tostring(k)
+      end
+    end,
+    __index = function(table,k)
+      return _table[k]
+    end
+  }
   table.nodeNew = function(label,fields)
     local n = table.name.size() + 1
     table.name[n] = label
@@ -19,9 +34,9 @@ function dataTree(id)
     if fields then
       for k,v in pairs(fields) do
         if table[k] == nil then
-          table[k] = {}
+          table[k] = vector(table.oid..tostring(k))
         end
-        table[k][n]=v
+        table[k][n] = v
       end
     end
     return n
@@ -48,6 +63,7 @@ function dataTree(id)
     table.last[ndx] = n
     return n
   end
+  setmetatable(table,metatable)
   return table
 end
 
