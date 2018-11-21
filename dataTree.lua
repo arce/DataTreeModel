@@ -4,19 +4,16 @@ require "CSV"
 
 function dataTree(id)
   local oid = id or ""
-  local table = {name=vector(),parent=vector(),first=vector(),
-    next=vector(),last=vector(),size=vector(),height=vector()}
+  local fields = {'name','parent','first','next','last','size','height'}
+  local table = {}
   local _table = table
   table = {oid=id}
-  for k,_ in pairs(_table) do
-    _table[k].oid = table.oid..tostring(k)
+  for _,k in pairs(fields) do
+    _table[k] = vector(table.oid..tostring(k))
   end
   local metatable = {
     __newindex = function(table,k,v)
       _table[k] = v
-      if table.oid then
-        _table[k].oid = table.oid..tostring(k)
-      end
     end,
     __index = function(table,k)
       return _table[k]
