@@ -1,14 +1,14 @@
 require "dataTree"
-
-local xoffset = 10
-local yoffset = 10
 local tree = nil
+local acme = nil
+local f = nil
 
 function drawing(tree,node)
+  fill(0)
   rect(tree.x[node]-4,tree.y[node]-4,8,8)
   text(tree.name[node],tree.x[node]+6,tree.y[node])
   local child = tree.first[node]
-  while child ~= 0 do
+  while child ~= NULL do
     line(tree.x[node],tree.y[node],tree.x[child],tree.y[child])
     drawing(tree,child)
     child = tree.next[child]
@@ -19,13 +19,13 @@ function simpleTreeLayout(tree,node,x,y,w,h)
   tree.x[node] = x + w / 2
   tree.y[node] = y
   local child = tree.first[node]
-  if child == 0 then
+  if child == NULL then
     return
   end
   local xoffset = w / tree.size[node]
   local yoffset = h / tree.height[node]
   local i = 0
-  while child ~= 0 do
+  while child ~= NULL do
     simpleTreeLayout(tree,child,x+xoffset*i,y+yoffset,xoffset,h-yoffset)
     child = tree.next[child]
     i = i + 1
@@ -34,11 +34,10 @@ end
 
 function setup()
   size(650,520)
-  background(178)
-  f = createFont("data/Vera.ttf",13)
-  textFont(f)
   
-  tree = dataTree()
+  textSize(15)
+  
+  tree = dataTree(1)
   
   acme = tree.nodeNew("Acme Inc.",{x=0,y=0})
     accounting = tree.addChild(acme,"Accounting",{x=0,y=0})
@@ -52,9 +51,10 @@ function setup()
       agile = tree.addChild(it,"Go agile",{x=0,y=0})
       goToR = tree.addChild(it,"Switch to R",{x=0,y=0})
 
-  simpleTreeLayout(tree,1,10,10,620,460)
+   simpleTreeLayout(tree,acme,10,10,620,460)
 end
 
 function draw()
-  drawing(tree,1)
+  background(178)
+  drawing(tree,acme)
 end

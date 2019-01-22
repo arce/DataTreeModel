@@ -1,6 +1,7 @@
 local write = io.write
 require "dataVector"
 require "CSV"
+NULL = -1
 
 function dataTree(id)
   local oid = id or ""
@@ -22,10 +23,10 @@ function dataTree(id)
   table.nodeNew = function(label,fields)
     local n = table.name.size() + 1
     table.name[n] = label
-    table.parent[n] = 0
-    table.first[n] = 0
-    table.next[n] = 0
-    table.last[n] = 0
+    table.parent[n] = NULL
+    table.first[n] = NULL
+    table.next[n] = NULL
+    table.last[n] = NULL
     table.size[n] = 0
     table.height[n] = 0
     if fields then
@@ -39,9 +40,9 @@ function dataTree(id)
     return n
   end
   function incrHeight(ndx)
-    if table.size[ndx]==1 then
+    if table.size[ndx] == 1 then
       table.height[ndx] = table.height[ndx] + 1
-      if table.parent[ndx] ~= 0 then
+      if table.parent[ndx] ~= NULL then
         incrHeight(table.parent[ndx])
       end
     end
@@ -49,7 +50,7 @@ function dataTree(id)
   table.addChild = function(ndx,label,fields)
     local n = table.nodeNew(label,fields)
     table.parent[n] = ndx
-    if table.first[ndx] == 0 then
+    if table.first[ndx] == NULL then
       table.first[ndx] = n
       table.size[ndx] = 1
       incrHeight(ndx)
@@ -75,7 +76,7 @@ function printDataNode(tree,node,fields)
   end
   write('\n')
   local child = tree.first[node]
-  while child ~= 0 do
+  while child ~= NULL do
     printDataNode(tree,child,fields)
     child = tree.next[child]
   end
@@ -83,5 +84,5 @@ end
 
 function printDataTree(tree,fields)
   print("oid:",tree.oid)
-  printDataNode(tree,1,fields)
+  printDataNode(tree,0,fields)
 end
