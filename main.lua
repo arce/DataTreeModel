@@ -1,4 +1,4 @@
-require "dataTree"
+require "DataTree"
 local tree = nil
 local acme = nil
 local f = nil
@@ -37,7 +37,7 @@ function setup()
   
   textSize(15)
   
-  tree = dataTree(1)
+  tree = DataTree()
   
   acme = tree.nodeNew("Acme Inc.",{x=0,y=0})
     accounting = tree.addChild(acme,"Accounting",{x=0,y=0})
